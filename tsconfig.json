@@ -9,6 +9,8 @@
       "@appium/types": ["types"]
     }
   },
-  "include": ["./packages/types/**/*.d.ts"],
-  "references": []
+  "files": [],
+  "references": [
+    {"path": "packages/support"}
+  ]
 }
