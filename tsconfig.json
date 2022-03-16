@@ -12,6 +12,7 @@
   "files": [],
   "references": [
     {"path": "packages/support"},
-    {"path": "packages/base-driver"}
+    {"path": "packages/base-driver"},
+    {"path": "packages/appium"}
   ]
 }
