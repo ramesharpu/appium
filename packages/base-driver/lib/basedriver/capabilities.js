@@ -10,6 +10,11 @@ const PREFIXED_APPIUM_OPTS_CAP = `${APPIUM_VENDOR_PREFIX}${APPIUM_OPTS_CAP}`;
 
 // Takes primary caps object and merges it into a secondary caps object.
 // (see https://www.w3.org/TR/webdriver/#dfn-merging-capabilities)
+/**
+ * @param {Capabilities} [primary]
+ * @param {Capabilities} [secondary]
+ * @returns {Capabilities}
+ */
 function mergeCaps (primary = {}, secondary = {}) {
   let result = Object.assign({}, primary);
 
@@ -25,6 +30,13 @@ function mergeCaps (primary = {}, secondary = {}) {
 }
 
 // Validates caps against a set of constraints
+/**
+ *
+ * @param {Capabilities} caps
+ * @param {Constraints} [constraints]
+ * @param {ValidateCapsOpts} [opts]
+ * @returns {Capabilities}
+ */
 function validateCaps (caps, constraints = {}, opts = {}) {
 
   let {skipPresenceConstraint} = opts;
@@ -126,6 +138,13 @@ function findNonPrefixedCaps ({alwaysMatch = {}, firstMatch = []}) {
 }
 
 // Parse capabilities (based on https://www.w3.org/TR/webdriver/#processing-capabilities)
+/**
+ *
+ * @param {W3CCapabilities} caps
+ * @param {Constraints} [constraints]
+ * @param {boolean} [shouldValidateCaps]
+ * @returns
+ */
 function parseCaps (caps, constraints = {}, shouldValidateCaps = true) {
   // If capabilities request is not an object, return error (#1.1)
   if (!_.isPlainObject(caps)) {
@@ -182,6 +201,7 @@ function parseCaps (caps, constraints = {}, shouldValidateCaps = true) {
 
   // Validate all of the first match capabilities and return an array with only the valid caps (see spec #5)
   let validationErrors = [];
+  /** @type {Capabilities[]} */
   let validatedFirstMatchCaps = allFirstMatchCaps.map((firstMatchCaps) => {
     try {
       // Validate firstMatch caps
@@ -213,10 +233,10 @@ function parseCaps (caps, constraints = {}, shouldValidateCaps = true) {
 // Calls parseCaps and just returns the matchedCaps variable
 /**
  *
- * @param {any} caps
+ * @param {import('@appium/types').DesiredCapabilities} caps
  * @param {import('@appium/types').Constraints} [constraints]
  * @param {boolean} [shouldValidateCaps]
- * @returns {any}
+ * @returns {import('@appium/types').AppiumCapabilities}
  */
 function processCapabilities (caps, constraints = {}, shouldValidateCaps = true) {
   const {matchedCaps, validationErrors} = parseCaps(caps, constraints, shouldValidateCaps);
@@ -280,3 +300,15 @@ export {
   parseCaps, processCapabilities, validateCaps, mergeCaps, APPIUM_VENDOR_PREFIX, APPIUM_OPTS_CAP,
   findNonPrefixedCaps, isStandardCap, stripAppiumPrefixes, promoteAppiumOptions, PREFIXED_APPIUM_OPTS_CAP,
 };
+
+/**
+ * @typedef {import('@appium/types').W3CCapabilities} W3CCapabilities
+ * @typedef {import('@appium/types').Capabilities} Capabilities
+ * @typedef {import('@appium/types').Constraints} Constraints
+ * @typedef {import('@appium/types').AppiumCapabilities} AppiumCapabilities
+ */
+
+/**
+ * @typedef ValidateCapsOpts
+ * @property {boolean} [skipPresenceConstraint] - if true, skip the presence constraint
+ */
